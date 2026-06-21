@@ -93,12 +93,8 @@ st.title("文献查询智能体")
 st.markdown("输入研究主题，Agent 自动搜索 arXiv 并总结分析")
 
 # 检查 Ollama 是否可用
-try:
-    requests.post(OLLAMA_URL, json={"model": MODEL_NAME, "messages": [{"role": "user", "content": "test"}]}, timeout=2)
-    ollama_ok = True
-except:
-    ollama_ok = False
-    st.warning(f"⚠Ollama 服务未启动（{OLLAMA_URL}），请先运行 `ollama serve`")
+ollama_ok = True
+
 
 topic = st.text_input("输入研究主题", placeholder="例如：machine learning, transformer")
 
@@ -110,11 +106,11 @@ if topic and ollama_ok:
         st.error(f"❌ {result}")
     else:
         # 显示结果
-        st.success(f"✅ 找到 {len(papers)} 篇论文")
+        st.success(f"找到 {len(papers)} 篇论文")
 
         # 显示论文列表
         for p in papers:
-            with st.expander(f"📄 {p['title']}"):
+            with st.expander(f"{p['title']}"):
                 st.write(f"**作者：** {', '.join(p['authors'])}")
                 st.write(f"**发布时间：** {p['published']}")
                 st.write(f"**摘要：** {p['summary']}...")
