@@ -3,7 +3,7 @@ import arxiv
 import requests
 
 # ============ 配置 ============
-OLLAMA_URL = "http://localhost:11434/api/generate"
+OLLAMA_URL = "http://127.0.0.1:11434/api/generate"
 MODEL_NAME = "llama3.1:8b"
 
 
@@ -34,13 +34,16 @@ def ask_ollama(prompt, system_prompt=None):
 # ============ 工具函数：搜索 arXiv ============
 def search_arxiv(query: str, max_results: int = 5):
     try:
+        import arxiv
         search = arxiv.Search(
             query=query,
             max_results=max_results,
             sort_by=arxiv.SortCriterion.Relevance
         )
         results = []
-        for paper in search.get_results():  # get_results() 替代 results()
+        # 使用 client 方式获取结果
+        client = arxiv.Client()
+        for paper in client.results(search):
             results.append({
                 "title": paper.title,
                 "summary": paper.summary[:400],
@@ -52,7 +55,6 @@ def search_arxiv(query: str, max_results: int = 5):
         return results
     except Exception as e:
         return {"error": str(e)}
-
 
 # ============ 智能体主函数 ============
 def ask_agent(question: str):
