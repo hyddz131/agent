@@ -4,7 +4,7 @@ import requests
 
 # ============ 配置 ============
 OLLAMA_URL = "http://localhost:11434/api/generate"
-MODEL_NAME = "qwen2.5:7b"  # 如果电脑配置不够，换成 llama3.2:3b
+MODEL_NAME = "llama3.1:8b"
 
 
 # ============ 调用 Ollama ============
